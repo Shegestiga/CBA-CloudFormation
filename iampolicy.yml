@@ -1,0 +1,94 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Creating IAM Users using Cloudformation
+
+Resources:
+  ProjectManager: 
+    Type: AWS::IAM::User
+    Properties: 
+      LoginProfile: 
+        Password: Cbaprojectmanager@1
+        PasswordResetRequired: true
+      UserName: cba_PM
+
+  ProjectManagerPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties: 
+      Description: IAM Policy for Project Manager
+      PolicyDocument: 
+        {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "Stmt1660304055278",
+        "Action": "*",
+        "Effect": "Allow",
+        "Resource": "*"
+      }
+    ]
+  }
+      Users:
+        - !Ref ProjectManager
+     
+  Developer:
+    Type: AWS::IAM::User
+    Properties: 
+      LoginProfile: 
+        Password: Cbadeveloper@1
+        PasswordResetRequired: true
+      UserName: cba_dev
+
+  DeveloperPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties: 
+      Description: IAM Policy for Developer
+      PolicyDocument: 
+        {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "Stmt1660306748461",
+        "Action": "ec2:*",
+        "Effect": "Allow",
+        "Resource": "arn:aws:ec2:*"
+      }
+    ]
+    }
+      Users:
+        - !Ref Developer
+
+  Intern:
+    Type: AWS::IAM::User
+    Properties: 
+      LoginProfile: 
+        Password: Cbaintern@1
+        PasswordResetRequired: true
+      UserName: cba_intern
+
+  InternPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties: 
+      Description: IAM Policy for Intern
+      PolicyDocument: 
+        {
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "Stmt1660310296227",
+      "Action": [
+        "iam:ChangePassword"
+      ],
+      "Effect": "Allow",
+      "Resource": "arn:aws:iam::*"
+    },
+    {
+      "Sid": "Stmt1660310430533",
+      "Action": [
+        "s3:ListBucket"
+      ],
+      "Effect": "Allow",
+      "Resource": "arn:aws:s3:::*"
+    }
+  ]
+}
+      Users:
+        - !Ref Intern
